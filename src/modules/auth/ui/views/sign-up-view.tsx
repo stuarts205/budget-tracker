@@ -75,9 +75,9 @@ export const SignUpView = () => {
             <form onSubmit={form.handleSubmit(onSubmit)} className="p-6 md:p-8">
               <div className="flex flex-col gap-6">
                 <div className="flex flex-col items-center text-center">
-                  <h1 className="text-2xl font-bold">Let&apos;s get started</h1>
+                  <h1 className="text-2xl font-bold text-blue-950">Let&apos;s get started</h1>
                   <p className="text-balance text-muted-foreground">
-                    Create an account to track your budget and expenses.
+                    Create an account.
                   </p>
                 </div>
                 <div className="grid gap-3">
@@ -154,10 +154,10 @@ export const SignUpView = () => {
                     <AlertTitle>{error}</AlertTitle>
                   </Alert>
                 )}
-                <Button type="submit" className="w-full" disabled={pending}>
+                <Button type="submit" variant="custom" className="w-full" disabled={pending}>
                   Sign In
                 </Button>
-                <div
+                {/* <div
                   className="after:border-border relative text-center text-sm after:absolute
                     after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t"
                 >
@@ -172,8 +172,8 @@ export const SignUpView = () => {
                   <Button variant="outline" type="button" className="w-full" disabled={pending}>
                     GitHub
                   </Button>
-                </div>
-                <div className="text-center text-sm">
+                </div> */}
+                <div className="text-center text-sm text-muted-foreground">
                   Already have an account?{" "}
                   <Link
                     href="/sign-in"
@@ -185,9 +185,8 @@ export const SignUpView = () => {
               </div>
             </form>
           </Form>
-
           <div
-            className="bg-radial from-orange-700 to-orange-800 relative hidden 
+            className="bg-radial from-blue-900 to-blue-950 relative hidden 
             md:flex flex-col gap-y-4 items-center justify-center"
           >
             <img src="/logo.svg" alt="Logo" className="h-23 w-23" />
