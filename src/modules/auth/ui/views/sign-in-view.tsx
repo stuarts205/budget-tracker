@@ -49,7 +49,7 @@ export const SignInView = () => {
       },
       {
         onSuccess: () => {
-          router.push("/");
+          router.push("/home");
           setPending(false);
         },
         onError: (err) => {
@@ -66,7 +66,7 @@ export const SignInView = () => {
     authClient.signIn.social(
       {
         provider: provider,
-        callbackURL: "/",
+        callbackURL: "/home",
       },
       {
         onSuccess: () => {
@@ -81,7 +81,11 @@ export const SignInView = () => {
   };
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-8 md:gap-6">
+      <div className="md:hidden flex flex-col gap-y-4 items-center justify-center">
+        <img src="/logo.svg" alt="Logo" className="h-23 w-23" />
+        <p className="text-3xl font-bold text-blue-950">Budget Tracker</p>
+      </div>
       <Card className="overflow-hidden p-0">
         <CardContent className="grid p-0 md:grid-cols-2">
           <Form {...form}>
@@ -187,7 +191,6 @@ export const SignInView = () => {
               </div>
             </form>
           </Form>
-
           <div
             className="bg-radial from-blue-900 to-blue-950 relative hidden 
             md:flex flex-col gap-y-4 items-center justify-center"
