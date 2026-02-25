@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, boolean, pgEnum, index } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, boolean, pgEnum, index, integer } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm/relations";
 import { nanoid } from "nanoid";
 
@@ -8,6 +8,7 @@ export const user = pgTable("user", {
   email: text("email").notNull().unique(),
   emailVerified: boolean("email_verified").default(false).notNull(),
   image: text("image"),
+  role: integer("role"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()

@@ -30,7 +30,7 @@ import { DashboardUserButton } from "./dashboard-user-button";
 const firstSection = [
   {
     label: "Dashboard",
-    href: "/",
+    href: "/home",
     icon: LayoutDashboardIcon,
   },
   {
@@ -68,7 +68,7 @@ export const DashboardSidebar = () => {
   return (
     <Sidebar>
       <SidebarHeader>
-        <Link className="flex items-center gap-2 px-2 pt-2" href="/">
+        <Link className="flex items-center gap-2 px-2 pt-2" href="/home">
           <Image src="/logo.svg" alt="Budget App Logo" width={36} height={36} />
           <p className="text-2xl font-semibold text-blue-950">Budget Tracker</p>
         </Link>

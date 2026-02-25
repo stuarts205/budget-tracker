@@ -61,7 +61,7 @@ export const SignUpView = () => {
       },
       {
         onSuccess: () => {
-          router.push("/");
+          router.push("/home");
           setPending(false);
         },
         onError: (err) => {
@@ -78,7 +78,7 @@ export const SignUpView = () => {
     authClient.signIn.social(
       {
         provider: provider,
-        callbackURL: "/",
+        callbackURL: "/home",
       },
       {
         onSuccess: () => {
