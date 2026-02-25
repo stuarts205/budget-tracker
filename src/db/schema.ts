@@ -1,4 +1,12 @@
-import { pgTable, text, timestamp, boolean, pgEnum, index, integer } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  text,
+  timestamp,
+  boolean,
+  pgEnum,
+  index,
+  integer,
+} from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm/relations";
 import { nanoid } from "nanoid";
 
@@ -74,6 +82,23 @@ export const verification = pgTable(
   },
   (table) => [index("verification_identifier_idx").on(table.identifier)],
 );
+
+export const budgets = pgTable("budgets", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => nanoid()),
+  name: text("name").notNull(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  category: text("category").notNull(),
+  amount: integer("amount").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => /* @__PURE__ */ new Date())
+    .notNull(),
+});
 
 export const userRelations = relations(user, ({ many }) => ({
   sessions: many(session),
