@@ -1,17 +1,41 @@
 import { db } from "@/db";
 import { budgets } from "@/db/schema";
-import { createTRPCRouter, baseProcedure } from "@/trpc/init";
-import { TRPCError } from "@trpc/server";
+import {
+  createTRPCRouter,
+  baseProcedure,
+  protectedProcedure,
+} from "@/trpc/init";
+import { budgetInsertSchema } from "../schemas";
+import z from "zod";
+import { eq } from "drizzle-orm";
 
 export const budgetsRouter = createTRPCRouter({
-    getMany: baseProcedure.query(async ({ ctx }) => {
-        const data = await db
+  getOne: baseProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ input, ctx }) => {
+      const [existingBudget] = await db
         .select()
-        .from(budgets);
+        .from(budgets)
+        .where(eq(budgets.id, input.id));
+      return existingBudget;
+    }),
+  getMany: baseProcedure
+    .query(async ({ ctx }) => {
+      const data = await db.select().from(budgets);
+      return data;
+    }),
+  create: protectedProcedure
+    .input(budgetInsertSchema)
+    .mutation(async ({ input, ctx }) => {
+      console.log("Creating budget with input:", input);
+      const [createdBudget] = await db
+        .insert(budgets)
+        .values({
+          ...input,
+          userId: ctx.auth.user.id,
+        })
+        .returning();
 
-        //await new Promise((resolve) => setTimeout(resolve, 5000));
-        //throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Failed to fetch users" });
-
-        return data;
-    })
-})
+      return createdBudget;
+    }),
+});
