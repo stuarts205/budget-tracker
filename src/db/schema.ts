@@ -6,6 +6,7 @@ import {
   pgEnum,
   index,
   integer,
+  varchar,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm/relations";
 import { nanoid } from "nanoid";
@@ -91,8 +92,8 @@ export const budgets = pgTable("budgets", {
   userId: text("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
-  category: text("category").notNull(),
-  amount: integer("amount").notNull(),
+  amount: varchar("amount").notNull(),
+  icon: text("icon"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
@@ -103,6 +104,7 @@ export const budgets = pgTable("budgets", {
 export const userRelations = relations(user, ({ many }) => ({
   sessions: many(session),
   accounts: many(account),
+  budgets: many(budgets),
 }));
 
 export const sessionRelations = relations(session, ({ one }) => ({
@@ -115,6 +117,13 @@ export const sessionRelations = relations(session, ({ one }) => ({
 export const accountRelations = relations(account, ({ one }) => ({
   user: one(user, {
     fields: [account.userId],
+    references: [user.id],
+  }),
+}));
+
+export const budgetRelations = relations(budgets, ({ one }) => ({
+  user: one(user, {
+    fields: [budgets.userId],
     references: [user.id],
   }),
 }));

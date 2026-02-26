@@ -10,28 +10,32 @@ import { ErrorBoundary } from "react-error-boundary";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { BudgetsListHeader } from "@/modules/budgets/ui/components/budgets-list-header";
 
 const Page = async () => {
   const session = await auth.api.getSession({
-      headers: await headers(),
-    });
-  
-    if (!session) {
-      redirect("/sign-in");
-    }
+    headers: await headers(),
+  });
+
+  if (!session) {
+    redirect("/sign-in");
+  }
 
   const queryClient = getQueryClient();
   void queryClient.prefetchQuery(trpc.budgets.getMany.queryOptions());
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <Suspense fallback={<BudgetsViewLoading />}>
-        <ErrorBoundary fallback={<BudgetsViewError />}>
-          <BudgetsView />
-        </ErrorBoundary>
-      </Suspense>
-    </HydrationBoundary>
-  )
-}
+    <>
+      <BudgetsListHeader />
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <Suspense fallback={<BudgetsViewLoading />}>
+          <ErrorBoundary fallback={<BudgetsViewError />}>
+            <BudgetsView />
+          </ErrorBoundary>
+        </Suspense>
+      </HydrationBoundary>
+    </>
+  );
+};
 
-export default Page
+export default Page;
